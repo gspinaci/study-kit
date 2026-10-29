@@ -1,0 +1,42 @@
+{% extends "_chapter.html" %}
+{% from "_macros.html" import level_badge, obj_links with context %}
+{% block page_title %}Cards{% endblock %}
+{% block crumb_label %}Cards{% endblock %}
+{% block chapter_content %}
+<header class="page-head">
+  <p class="eyebrow">{{ ch }} · Cards</p>
+  <h1>Cards: {{ chapter.title | md }}</h1>
+  <p class="muted">The same cards as the Anki deck. Open a card to see the answer. <a href="cards.tsv" download>Download cards.tsv</a>.</p>
+</header>
+<div class="card-filters js-only" role="group" aria-label="Filter cards">
+  <label>Objective
+    <select data-card-filter="objective"><option value="">All</option>{% for o in chapter.objectives %}<option value="{{ o.id }}">{{ o.id }}</option>{% endfor %}</select>
+  </label>
+  <label>Type
+    <select data-card-filter="type"><option value="">All</option>{% for t in types %}<option value="{{ t }}">{{ t }}</option>{% endfor %}</select>
+  </label>
+  <label>Level
+    <select data-card-filter="level"><option value="">All</option><option value="core">core</option><option value="secondary">secondary</option></select>
+  </label>
+  <button type="button" class="btn btn--ghost" data-action="toggle-cards" aria-pressed="false">Open all</button>
+  <p class="card-filters__count" aria-live="polite"></p>
+</div>
+<ul class="flashcards">
+{% for c in cards %}
+  <li class="flashcard" id="{{ c.id }}" data-objective="{{ c.objective }}" data-type="{{ c.type }}" data-level="{{ c.level }}">
+    <div class="flashcard__badges"><span class="tag">{{ c.type }}</span>{{ level_badge(c.level) }}<code class="flashcard__id">{{ c.id }}</code></div>
+    <div class="flashcard__front">{{ c.front_html }}</div>
+    {% if c.media %}<img class="flashcard__media" src="media/{{ c.media }}" alt="Figure for card {{ c.id }}">{% endif %}
+    <details class="flashcard__reveal">
+      <summary>Show answer</summary>
+      <div class="flashcard__back">
+        {% if c.revealed_html %}<div class="flashcard__answer">{{ c.revealed_html }}</div>{% endif %}
+        {% if c.back_html %}<div class="flashcard__answer">{{ c.back_html }}</div>{% endif %}
+        {% if c.expl_html %}<div class="flashcard__expl">{{ c.expl_html }}</div>{% endif %}
+        <p class="flashcard__meta"><a class="obj-ref" href="{{ root }}{{ obj_url(c.objective) }}">{{ c.objective }}</a> {{ c.objective_text | md }} · {{ c.source_html }}</p>
+      </div>
+    </details>
+  </li>
+{% endfor %}
+</ul>
+{% endblock %}

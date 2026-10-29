@@ -1,0 +1,7 @@
+{% macro level_badge(level) -%}
+<span class="badge badge--{{ level }}">{% if level == 'core' %}<svg aria-hidden="true" viewBox="0 0 10 10" width="9" height="9"><rect x="1" y="1" width="8" height="8" transform="rotate(45 5 5)"/></svg>Core{% else %}<svg aria-hidden="true" viewBox="0 0 10 10" width="9" height="9"><circle cx="5" cy="5" r="3.6"/></svg>Secondary{% endif %}</span>
+{%- endmacro %}
+
+{% macro obj_links(ids, root) -%}
+{% for oid in ids %}{% set u = obj_url(oid) %}{% if u %}<a class="obj-ref" href="{{ root }}{{ u }}"{% if objs[oid] is defined %} title="{{ objs[oid].text | plain }}"{% endif %}>{{ oid }}</a>{% else %}<span class="obj-ref">{{ oid }}</span>{% endif %}{% endfor %}
+{%- endmacro %}

@@ -1,0 +1,28 @@
+{% extends "_chapter.html" %}
+{% from "_macros.html" import obj_links with context %}
+{% block page_title %}Glossary{% endblock %}
+{% block crumb_label %}Glossary{% endblock %}
+{% block chapter_content %}
+<header class="page-head">
+  <p class="eyebrow">{{ ch }} · Glossary</p>
+  <h1>Glossary: {{ chapter.title | md }}</h1>
+  {% if has_glossary %}<p class="muted">All chapters together: <a href="{{ root }}glossary.html">book glossary</a>.</p>{% endif %}
+</header>
+<div class="filter js-only">
+  <label for="gfilter">Filter terms</label>
+  <input id="gfilter" type="search" data-filter=".term" autocomplete="off" placeholder="Type to filter…">
+  <p class="filter__empty" hidden>No matching terms.</p>
+</div>
+<dl class="glossary">
+{% for g in entries %}
+  <div class="term" id="term-{{ g.term | slug }}" data-text="{{ (g.term ~ ' ' ~ (g.original or '') ~ ' ' ~ g.definition) | plain | lower }}">
+    <dt>{{ g.term | md }}{% if g.original %} <span class="term__orig">({{ g.original | md }})</span>{% endif %}</dt>
+    <dd>
+      <p>{{ g.definition | md }}</p>
+      {% if g.notation %}<p class="term__notation"><span class="muted">Notation</span> {{ g.notation | md }}</p>{% endif %}
+      <p class="refs">{{ obj_links(g.objectives, root) }}</p>
+    </dd>
+  </div>
+{% endfor %}
+</dl>
+{% endblock %}

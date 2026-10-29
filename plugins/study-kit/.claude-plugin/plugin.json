@@ -1,0 +1,12 @@
+{
+  "name": "study-kit",
+  "version": "0.3.0",
+  "description": "Grounded study paths as a static website, plus a styled Anki deck, from a book, chapter, paper or syllabus — with a validator, link checker and visual checks.",
+  "author": {
+    "name": "Gianmarco Spinaci"
+  },
+  "homepage": "https://github.com/gspinaci/study-kit",
+  "repository": "https://github.com/gspinaci/study-kit",
+  "license": "MIT",
+  "keywords": ["study", "learning", "anki", "flashcards", "spaced-repetition", "jupyter", "quiz", "curriculum", "agent-skills"]
+}

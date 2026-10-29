@@ -1,0 +1,44 @@
+{% extends "_chapter.html" %}
+{% from "_macros.html" import level_badge, obj_links with context %}
+{% block page_title %}Objectives{% endblock %}
+{% block chapter_content %}
+<header class="page-head">
+  <p class="eyebrow">{{ ch }}{% if chapter.source_ref %} · {{ chapter.source_ref | md }}{% endif %}</p>
+  <h1>{{ chapter.title | md }}</h1>
+</header>
+<section class="goal" aria-labelledby="goal">
+  <h2 id="goal">Goal</h2>
+  {{ chapter.goal | mdblock }}
+  {% if meta.prerequisites %}<p class="muted"><strong>Prerequisites:</strong> {{ meta.prerequisites | md }}</p>{% endif %}
+</section>
+<section aria-labelledby="objectives">
+  <h2 id="objectives">Objectives</h2>
+  <ol class="objectives">
+  {% for o in chapter.objectives %}
+    <li class="objective objective--{{ o.level }}" id="{{ o.id }}">
+      <div class="objective__head"><code class="objective__id">{{ o.id }}</code>{{ level_badge(o.level) }}</div>
+      <p class="objective__text">{{ o.text | md }}</p>
+      <dl class="facts facts--compact">
+        <div><dt>Source</dt><dd>{{ o.source | md }}</dd></div>
+        {% if o.why_core %}<div><dt>Core because</dt><dd>{{ o.why_core | md }}</dd></div>{% endif %}
+        {% if o.syllabus_outcome %}<div><dt>Course outcome</dt><dd>{% if o.syllabus_outcome.text is defined %}“{{ o.syllabus_outcome.text | md }}”{% if syllabus_names[o.syllabus_outcome.syllabus] is defined %} — <a href="{{ root }}index.html#syl-{{ o.syllabus_outcome.syllabus }}">{{ syllabus_names[o.syllabus_outcome.syllabus].course }}</a>{% endif %}{% else %}{{ o.syllabus_outcome | md }}{% endif %}</dd></div>{% endif %}
+      </dl>
+      {% set bl = backlinks[o.id] %}
+      {% if bl %}
+      <div class="served">
+        <span class="served__label">Served by</span>
+        <ul>
+        {% for key, file, label in page_list %}{% if bl[key] is defined %}
+          <li><span class="served__kind">{{ label }}</span><span class="served__links">
+            {% if key == 'cards' %}<a href="{{ root }}{{ bl[key][0].href.split('#')[0] }}?objective={{ o.id }}">{{ bl[key] | length }} card{% if bl[key] | length != 1 %}s{% endif %}</a>
+            {% else %}{% for b in bl[key] %}<a href="{{ root }}{{ b.href }}">{{ b.label | md }}</a>{% if not loop.last %}<span class="sep">·</span>{% endif %}{% endfor %}{% endif %}
+          </span></li>
+        {% endif %}{% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+    </li>
+  {% endfor %}
+  </ol>
+</section>
+{% endblock %}

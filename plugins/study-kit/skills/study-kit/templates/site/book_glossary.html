@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% from "_macros.html" import obj_links with context %}
+{% block title %}Glossary · {{ book.title | plain }}{% endblock %}
+{% block crumbs %}
+<nav class="crumbs" aria-label="Breadcrumb">
+  <ol><li><a href="index.html">{{ book.title | md }}</a></li><li><span aria-current="page">Glossary</span></li></ol>
+</nav>
+{% endblock %}
+{% block content %}
+<header class="page-head">
+  <p class="eyebrow">Whole book</p>
+  <h1>Glossary</h1>
+  <p class="muted">Every term from every chapter, alphabetical. Each entry names the chapter it comes from.</p>
+</header>
+<div class="filter js-only">
+  <label for="gfilter">Filter terms</label>
+  <input id="gfilter" type="search" data-filter=".term" autocomplete="off" placeholder="Type to filter…">
+  <p class="filter__empty" hidden>No matching terms.</p>
+</div>
+<dl class="glossary">
+{% for g in entries %}
+  <div class="term" data-text="{{ (g.term ~ ' ' ~ (g.original or '') ~ ' ' ~ g.definition ~ ' ' ~ g.chapter) | plain | lower }}">
+    <dt><a href="{{ g.href }}">{{ g.term | md }}</a>{% if g.original %} <span class="term__orig">({{ g.original | md }})</span>{% endif %} <span class="tag">{{ g.chapter }}</span></dt>
+    <dd>
+      <p>{{ g.definition | md }}</p>
+      {% if g.notation %}<p class="term__notation"><span class="muted">Notation</span> {{ g.notation | md }}</p>{% endif %}
+      <p class="refs">{{ obj_links(g.objectives, root) }}</p>
+    </dd>
+  </div>
+{% endfor %}
+</dl>
+{% endblock %}

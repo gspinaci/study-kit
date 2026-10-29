@@ -1,0 +1,2 @@
+-r plugins/study-kit/skills/study-kit/requirements.txt
+pytest>=8

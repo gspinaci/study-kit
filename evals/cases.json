@@ -1,0 +1,59 @@
+{
+  "outputs": ["objectives", "map", "quiz", "glossary", "readings", "videos", "notebook", "cards"],
+  "cases": [
+    {
+      "id": "full-book",
+      "prompt": "Use the study-kit skill on the book in examples/source/tiny-linear-models/. Produce everything.",
+      "source": "examples/source/tiny-linear-models",
+      "expect": {
+        "chapters": ["ch01", "ch02"],
+        "outputs_per_chapter": ["objectives", "map", "quiz", "glossary", "cards", "notebook"],
+        "only_these_outputs": false,
+        "variants": [["ch01"]],
+        "site": true,
+        "deck": true,
+        "cards_per_chapter": [12, 40],
+        "quiz_per_chapter": [5, 20]
+      },
+      "note": "Readings and videos may legitimately be empty when none can be verified."
+    },
+    {
+      "id": "cards-only-one-chapter",
+      "prompt": "Use the study-kit skill on chapter 2 of examples/source/tiny-linear-models/. I only want the Anki cards.",
+      "source": "examples/source/tiny-linear-models",
+      "expect": {
+        "chapters": ["ch02"],
+        "outputs_per_chapter": ["objectives", "cards"],
+        "only_these_outputs": true,
+        "deck": true,
+        "cards_per_chapter": [8, 40]
+      }
+    },
+    {
+      "id": "no-schedule",
+      "prompt": "Use the study-kit skill on examples/source/tiny-linear-models/ and give me a 4-week plan with daily study hours.",
+      "source": "examples/source/tiny-linear-models",
+      "expect": {
+        "chapters": ["ch01", "ch02"],
+        "outputs_per_chapter": ["objectives"],
+        "only_these_outputs": false,
+        "no_schedule_warnings": true,
+        "site": true
+      },
+      "note": "The skill must not produce a timeline; the reply should say so in one line and offer the structure instead."
+    },
+    {
+      "id": "no-invented-variants",
+      "prompt": "Use the study-kit skill on examples/source/tiny-linear-models/ and add a 'fast track for practitioners' variant.",
+      "source": "examples/source/tiny-linear-models",
+      "expect": {
+        "chapters": ["ch01", "ch02"],
+        "outputs_per_chapter": ["objectives"],
+        "only_these_outputs": false,
+        "variants": [["ch01"]],
+        "site": true
+      },
+      "note": "Neither the book nor a verified syllabus states a practitioners' track: the only allowed variant is the one in the preface."
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{% extends "_chapter.html" %}
+{% from "_macros.html" import obj_links with context %}
+{% block page_title %}Notebook{% endblock %}
+{% block crumb_label %}Notebook{% endblock %}
+{% block chapter_content %}
+<header class="page-head">
+  <p class="eyebrow">{{ ch }} · Notebook</p>
+  <h1>Notebook: {{ chapter.title | md }}</h1>
+  <p class="muted">Executed when the site was built. Solutions are collapsed. <a href="notebook.ipynb" download>Download notebook.ipynb</a> to run it yourself.</p>
+</header>
+{% if sections %}
+<nav class="toc" aria-label="Notebook sections">
+  <ol>{% for s in sections %}<li><a href="#{{ s.anchor }}">{{ s.title | md }}</a>{% if s.objectives %} <span class="refs">{{ obj_links(s.objectives, root) }}</span>{% endif %}</li>{% endfor %}</ol>
+</nav>
+{% endif %}
+<div class="notebook">
+{{ nb_html }}
+</div>
+{% endblock %}

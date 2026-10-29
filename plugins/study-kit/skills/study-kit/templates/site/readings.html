@@ -1,0 +1,32 @@
+{% extends "_chapter.html" %}
+{% from "_macros.html" import obj_links with context %}
+{% block page_title %}Readings{% endblock %}
+{% block crumb_label %}Readings{% endblock %}
+{% block chapter_content %}
+<header class="page-head">
+  <p class="eyebrow">{{ ch }} · Readings</p>
+  <h1>Readings for {{ chapter.title | md }}</h1>
+  <p class="muted">Each work is here because it serves an objective. <a href="readings.bib" download>Download readings.bib</a> (Zotero / Better BibTeX).</p>
+</header>
+<ul class="readings">
+{% for r in entries %}
+  <li class="reading" id="{{ r.key }}">
+    <div class="reading__head">
+      <span class="tag tag--{{ r.kind }}">{{ 'Core' if r.kind == 'core' else 'Deepening' }}</span>
+      <span class="refs">{{ obj_links(r.objectives, root) }}</span>
+    </div>
+    <p class="reading__cite">{{ r.citation | md }}</p>
+    <div class="reading__adds"><span class="label">What it adds</span>{{ r.adds | mdblock }}</div>
+    <p class="reading__links">
+      {% if r.doi %}<a href="https://doi.org/{{ r.doi }}" rel="noopener">doi:{{ r.doi }}</a>{% endif %}
+      {% if r.url %}<a href="{{ r.url }}" rel="noopener">{{ 'Open access / official page' if r.doi else 'Official page' }}</a>{% endif %}
+    </p>
+    <details class="bib">
+      <summary>BibTeX</summary>
+      <pre id="bib-{{ r.key }}">{{ r.bibtex }}</pre>
+    </details>
+    <button type="button" class="btn btn--small js-only" data-copy="#bib-{{ r.key }}">Copy BibTeX</button>
+  </li>
+{% endfor %}
+</ul>
+{% endblock %}

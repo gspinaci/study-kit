@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use study-kit in your work, please cite it as below."
+title: "study-kit: grounded study websites and validated study materials as an agent skill"
+type: software
+authors:
+  - family-names: Spinaci
+    given-names: Gianmarco
+    affiliation: "Università di Bologna"
+version: 0.3.0
+date-released: 2026-10-29
+license: MIT
+repository-code: "https://github.com/gspinaci/study-kit"
+keywords:
+  - agent skills
+  - spaced repetition
+  - Anki
+  - learning design
+  - curriculum grounding
+abstract: >
+  An agent skill that turns an authoritative source (book, chapter, paper or syllabus)
+  into a study path and modular study materials — objectives, a styled Anki deck,
+  notebooks, quizzes, glossaries and readings — all hooked onto chapter objectives,
+  grounded in the source or in verified syllabi, and checked by a deterministic validator.

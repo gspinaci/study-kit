@@ -1,0 +1,48 @@
+{
+  "title": "A Tiny Book on Linear Models",
+  "subtitle": "Least squares and regularization in two chapters",
+  "slug": "tiny-linear-models",
+  "language": "en",
+  "source": {
+    "citation": "*A Tiny Book on Linear Models* — example source written for study-kit (`examples/source/tiny-linear-models/`).",
+    "url": null,
+    "license": "CC BY 4.0"
+  },
+  "chapters": [
+    {
+      "id": "ch01",
+      "slug": "ch01-least-squares",
+      "title": "Least Squares",
+      "scope": "The linear model in matrix form, the squared loss, the normal equations, the geometry of the fit, stable solvers.",
+      "goal": "Fit a linear model by least squares and understand the fit as an orthogonal projection.",
+      "prerequisites": "Matrix products, transposes and inverses; derivatives of functions of several variables (stated in the preface).",
+      "requires": [],
+      "flags": ["required"],
+      "forward_links": [
+        {"chapter": "ch02", "note": "ridge modifies the normal equations of §1.3; the invertibility condition is what fails in §2.1"}
+      ],
+      "syllabi": []
+    },
+    {
+      "id": "ch02",
+      "slug": "ch02-regularization",
+      "title": "Regularization",
+      "scope": "When least squares is unreliable, ridge, lasso, choosing λ by cross-validation.",
+      "goal": "Stabilize a linear fit with a penalty and choose its strength without leaking validation data.",
+      "prerequisites": "ch01, in particular the normal equations (§1.3).",
+      "requires": ["ch01"],
+      "flags": ["optional for OLS-only readers"],
+      "forward_links": [],
+      "syllabi": []
+    }
+  ],
+  "variants": [
+    {
+      "id": "ols-only",
+      "title": "Ordinary least squares only",
+      "chapters": ["ch01"],
+      "source": "Preface, \"How to read this book\": readers interested only in ordinary least squares may stop after Chapter 1."
+    }
+  ],
+  "syllabi": []
+}

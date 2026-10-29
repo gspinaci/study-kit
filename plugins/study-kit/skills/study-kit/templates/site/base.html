@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="{{ book.language | default('en') }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}{{ book.title | plain }}{% endblock %}</title>
+<script>
+  (function () {
+    try { var t = localStorage.getItem("sk-theme"); if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t); } catch (e) {}
+    document.documentElement.classList.add("js");
+  })();
+</script>
+<link rel="stylesheet" href="{{ root }}assets/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@{{ katex }}/dist/katex.min.css" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@{{ katex }}/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@{{ katex }}/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+<script defer src="{{ root }}assets/site.js"></script>
+</head>
+<body class="page-{{ page }}">
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="brand" href="{{ root }}index.html">{{ book.title | md }}</a>
+    <nav class="site-nav" aria-label="Site">
+      <a href="{{ root }}index.html"{% if page == 'home' %} aria-current="page"{% endif %}>Path</a>
+      {% if has_glossary %}<a href="{{ root }}glossary.html"{% if page == 'glossary' and not ch is defined %} aria-current="page"{% endif %}>Glossary</a>{% endif %}
+      <button class="theme-toggle js-only" type="button" aria-label="Switch colour theme" title="Switch colour theme">
+        <svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path class="theme-icon" d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9z"/></svg>
+        <span class="theme-toggle__label">Theme</span>
+      </button>
+    </nav>
+  </div>
+</header>
+{% block subnav %}{% endblock %}
+<main id="main" class="{% block main_class %}main{% endblock %}">
+{% block crumbs %}{% endblock %}
+{% block content %}{% endblock %}
+</main>
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    {% if book.source %}
+    <p class="cite">Source: {{ book.source.citation | md }}{% if book.source.url %} · <a href="{{ book.source.url }}" rel="noopener">{{ book.source.url | replace('https://', '') | replace('http://', '') }}</a>{% endif %}</p>
+    {% if book.source.license %}<p class="license">Source licence: {{ book.source.license | md }}</p>{% endif %}
+    {% endif %}
+    <p class="made">Study kit generated with study-kit. Paraphrased from the source; check it against the original.</p>
+  </div>
+</footer>
+</body>
+</html>

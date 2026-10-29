@@ -1,0 +1,21 @@
+{% extends "_chapter.html" %}
+{% from "_macros.html" import obj_links with context %}
+{% block page_title %}Map{% endblock %}
+{% block crumb_label %}Map{% endblock %}
+{% block chapter_content %}
+<header class="page-head">
+  <p class="eyebrow">{{ ch }} · Map</p>
+  <h1>Map of {{ chapter.title | md }}</h1>
+  <p class="muted">Sections in the book's order, with the concepts they introduce and the objectives they serve.</p>
+</header>
+<ol class="map">
+{% for s in chapter.map %}
+  <li class="map__section" id="sec-{{ s.section | slug }}">
+    <h2><span class="map__num">§{{ s.section }}</span> {% if s.url %}<a href="{{ s.url }}" rel="noopener">{{ s.title | md }}</a>{% else %}{{ s.title | md }}{% endif %}</h2>
+    {% if s.pages %}<p class="muted">{{ s.pages }}</p>{% endif %}
+    {% if s.concepts %}<ul class="concepts">{% for c in s.concepts %}<li>{{ c | md }}</li>{% endfor %}</ul>{% endif %}
+    <p class="refs">{{ obj_links(s.objectives, root) }}</p>
+  </li>
+{% endfor %}
+</ol>
+{% endblock %}

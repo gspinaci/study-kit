@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}{% block page_title %}{% endblock %} · {{ chapter.title | plain }} · {{ book.title | plain }}{% endblock %}
+{% block subnav %}
+<nav class="chapter-nav" aria-label="Chapter pages">
+  <div class="chapter-nav__inner">
+    <span class="chapter-nav__id">{{ ch }}</span>
+    <ul class="tabs">
+    {% for key, file, label in page_list %}
+      {% if pages[key] %}
+      <li><a href="{{ file }}"{% if page == key %} aria-current="page"{% endif %}>{{ label }}</a></li>
+      {% endif %}
+    {% endfor %}
+    </ul>
+  </div>
+</nav>
+{% endblock %}
+{% block crumbs %}
+<nav class="crumbs" aria-label="Breadcrumb">
+  <ol>
+    <li><a href="{{ root }}index.html">{{ book.title | md }}</a></li>
+    <li>{% if page == 'objectives' %}<span aria-current="page">{{ ch }} · {{ chapter.title | md }}</span>{% else %}<a href="index.html">{{ ch }} · {{ chapter.title | md }}</a>{% endif %}</li>
+    {% if page != 'objectives' %}<li><span aria-current="page">{% block crumb_label %}{% endblock %}</span></li>{% endif %}
+  </ol>
+</nav>
+{% endblock %}
+{% block content %}
+{% block chapter_content %}{% endblock %}
+<nav class="pager" aria-label="Chapters">
+  {% if prev %}<a class="pager__prev" href="{{ root }}{{ prev.slug }}/index.html"><span>Previous chapter</span>{{ prev.id }} · {{ prev.title | md }}</a>{% else %}<span></span>{% endif %}
+  {% if next %}<a class="pager__next" href="{{ root }}{{ next.slug }}/index.html"><span>Next chapter</span>{{ next.id }} · {{ next.title | md }}</a>{% endif %}
+</nav>
+{% endblock %}

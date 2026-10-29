@@ -1,0 +1,24 @@
+{% extends "_chapter.html" %}
+{% from "_macros.html" import obj_links with context %}
+{% block page_title %}Videos{% endblock %}
+{% block crumb_label %}Videos{% endblock %}
+{% block chapter_content %}
+<header class="page-head">
+  <p class="eyebrow">{{ ch }} · Videos</p>
+  <h1>Videos for {{ chapter.title | md }}</h1>
+  <p class="muted">Lectures and explainers that support specific sections. Links open the original page.</p>
+</header>
+<ul class="videos">
+{% for v in videos %}
+  <li class="video" id="v{{ loop.index }}">
+    <a class="video__link" href="{{ v.url }}" rel="noopener">
+      <svg class="video__icon" aria-hidden="true" viewBox="0 0 24 24" width="28" height="28"><circle cx="12" cy="12" r="11"/><path d="M10 8l6 4-6 4z"/></svg>
+      <span class="video__title">{{ v.title | md }}</span>
+      <span class="video__meta">{{ v.by }}{% if v.year %} · {{ v.year }}{% endif %}{% if v.duration %} · {{ v.duration }}{% endif %}</span>
+    </a>
+    <p class="video__about">Supports {% for s in v.sections %}<a href="map.html#sec-{{ s | slug }}">§{{ s }}</a>{% if not loop.last %}, {% endif %}{% endfor %} · {{ obj_links(v.objectives, root) }}{% if v.subtitles %} · subtitles: {{ v.subtitles | join(', ') }}{% endif %}</p>
+    {% if v.note %}<div class="video__note">{{ v.note | mdblock }}</div>{% endif %}
+  </li>
+{% endfor %}
+</ul>
+{% endblock %}

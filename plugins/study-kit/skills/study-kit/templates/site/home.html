@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% from "_macros.html" import level_badge with context %}
+{% block main_class %}main main--wide{% endblock %}
+{% block content %}
+<section class="hero">
+  <p class="eyebrow">Study path</p>
+  <h1>{{ book.title | md }}</h1>
+  {% if book.subtitle %}<p class="hero__sub">{{ book.subtitle | md }}</p>{% endif %}
+  {% if book.source %}<p class="hero__src">{{ book.source.citation | md }}</p>{% endif %}
+  <p class="hero__note">The order, prerequisites and variants below come from the book itself or from courses that adopt it. Pick your own way through.</p>
+</section>
+
+<section class="block" aria-labelledby="sequence">
+  <h2 id="sequence">Sequence</h2>
+  {% if variants %}
+  <div class="variant-bar js-only" role="group" aria-label="Highlight a variant">
+    <span class="variant-bar__label">Highlight</span>
+    <button type="button" class="chip" data-variant="" aria-pressed="true">All chapters</button>
+    {% for v in variants %}<button type="button" class="chip" data-variant="{{ v.chapters | join(' ') }}" aria-pressed="false">{{ v.title | md }}</button>{% endfor %}
+  </div>
+  {% endif %}
+  <ol class="chapter-list">
+  {% for c in chapters %}
+    {% set m = c.meta %}
+    <li class="chapter-card{% if not c.produced %} is-pending{% endif %}" data-chapter="{{ m.id }}" id="{{ m.id }}">
+      <div class="chapter-card__head">
+        <span class="chapter-card__num">{{ m.id }}</span>
+        <h3>{% if c.produced %}<a href="{{ c.slug }}/index.html">{{ m.title | md }}</a>{% else %}{{ m.title | md }}{% endif %}</h3>
+        <div class="chapter-card__flags">
+          {% for f in m.flags | default([]) %}<span class="flag">{{ f }}</span>{% endfor %}
+          {% if not c.produced %}<span class="flag flag--muted">not produced yet</span>{% endif %}
+        </div>
+      </div>
+      {% if m.scope %}<p class="chapter-card__scope">{{ m.scope | md }}</p>{% endif %}
+      {% if c.goal %}<p class="chapter-card__goal">{{ c.goal | md }}</p>{% endif %}
+      <dl class="facts">
+        {% if m.prerequisites %}<div><dt>Prerequisites</dt><dd>{{ m.prerequisites | md }}</dd></div>{% endif %}
+        {% if m.forward_links %}<div><dt>Used later in</dt><dd>{% for fl in m.forward_links %}<a href="#{{ fl.chapter }}">{{ fl.chapter }}</a>{% if fl.note %} — {{ fl.note | md }}{% endif %}{% if not loop.last %}; {% endif %}{% endfor %}</dd></div>{% endif %}
+        {% if m.syllabi %}<div><dt>In courses</dt><dd>{% for s in m.syllabi %}{% if syllabus_names[s] is defined %}<a href="#syl-{{ s }}">{{ syllabus_names[s].course }}</a>{% else %}{{ s }}{% endif %}{% if not loop.last %}, {% endif %}{% endfor %}</dd></div>{% endif %}
+      </dl>
+      {% if c.produced %}
+      <ul class="counts" aria-label="Contents">
+        <li>{{ c.counts.core }} core · {{ c.counts.secondary }} secondary objectives</li>
+        {% for n, one, many in [(c.counts.quiz, 'question', 'questions'), (c.counts.cards, 'card', 'cards'), (c.counts.readings, 'reading', 'readings'), (c.counts.videos, 'video', 'videos')] %}
+        {% if n %}<li>{{ n }} {{ one if n == 1 else many }}</li>{% endif %}
+        {% endfor %}
+      </ul>
+      <ul class="page-links" aria-label="Pages of {{ m.id }}">
+        {% for key, file, label in page_list %}{% if c.pages[key] %}<li><a href="{{ c.slug }}/{{ file }}">{{ label }}</a></li>{% endif %}{% endfor %}
+      </ul>
+      {% endif %}
+    </li>
+  {% endfor %}
+  </ol>
+</section>
+
+<section class="block" aria-labelledby="deps">
+  <h2 id="deps">Dependencies</h2>
+  <p class="muted">Solid arrows: prerequisites stated by the book. Dashed: later chapters that reuse a chapter. Select a chapter to open it.</p>
+  <div class="scroll-x depgraph-wrap">{{ svg }}</div>
+</section>
+
+<section class="block" aria-labelledby="variants">
+  <h2 id="variants">Variants</h2>
+  {% if variants %}
+  <ul class="variant-list">
+    {% for v in variants %}
+    <li>
+      <h3>{{ v.title | md }}</h3>
+      <p>Chapters: {% for c in v.chapters %}<a href="#{{ c }}">{{ c }}</a>{% if not loop.last %}, {% endif %}{% endfor %}</p>
+      <p class="muted">Source: {{ v.source | md }}</p>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p>No variants are stated by the book or by verified syllabi.</p>
+  {% endif %}
+</section>
+
+<section class="block" aria-labelledby="syllabi">
+  <h2 id="syllabi">Courses that use this book</h2>
+  {% if syllabi %}
+  <ul class="syllabus-list">
+    {% for s in syllabi %}
+    <li id="syl-{{ s.id }}">
+      <h3><a href="{{ s.url }}" rel="noopener">{{ s.course }}</a></h3>
+      <p class="muted">{{ s.institution }}{% if s.year %}, {{ s.year }}{% endif %}{% if s.chapters %} · chapters {{ s.chapters | join(', ') }}{% endif %}</p>
+      {% if s.outcomes %}<ul class="outcomes">{% for o in s.outcomes %}<li>{{ o | md }}</li>{% endfor %}</ul>{% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p>No syllabi verified.</p>
+  {% endif %}
+</section>
+{% endblock %}

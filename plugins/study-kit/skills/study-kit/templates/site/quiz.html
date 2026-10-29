@@ -1,0 +1,67 @@
+{% extends "_chapter.html" %}
+{% from "_macros.html" import obj_links with context %}
+{% block page_title %}Quiz{% endblock %}
+{% block crumb_label %}Quiz{% endblock %}
+{% macro solution(q) -%}
+  {% if q.format == 'mc' %}
+    {% for o in q.options if o.correct %}<p class="verdict verdict--ok">Correct: <strong>{{ o.key }}</strong></p>{% endfor %}
+    <ul class="opt-whys">
+    {% for o in q.options %}<li class="{% if o.correct %}is-correct{% else %}is-wrong{% endif %}"><strong>{{ o.key }}</strong> {% if o.correct %}right{% else %}wrong{% endif %}: {{ o.why | md }}</li>{% endfor %}
+    </ul>
+  {% elif q.format == 'tf' %}
+    <p class="verdict {% if q.answer %}verdict--ok{% else %}verdict--no{% endif %}">Answer: <strong>{{ 'True' if q.answer else 'False' }}</strong></p>
+  {% endif %}
+  {{ q.solution | mdblock }}
+  <p class="sol-meta">Source: {{ q.source | md }} · {{ obj_links(q.objectives, root) }}</p>
+{%- endmacro %}
+{% block chapter_content %}
+<header class="page-head">
+  <p class="eyebrow">{{ ch }} · Quiz</p>
+  <h1>Quiz: {{ chapter.title | md }}</h1>
+  <p class="muted">Grouped from recall to analysis. Questions marked with an earlier chapter's objective connect to it.</p>
+</header>
+<div class="quiz-tools">
+  <nav class="jump" aria-label="Quiz levels">
+    {% for lv, qs in levels %}<a href="#level-{{ lv }}">{{ lv | capitalize }} <span class="count">{{ qs | length }}</span></a>{% endfor %}
+  </nav>
+  <div class="quiz-actions js-only">
+    <button type="button" class="btn" data-action="toggle-solutions" aria-pressed="false">Show all solutions</button>
+    <button type="button" class="btn btn--ghost" data-action="print">Print</button>
+  </div>
+</div>
+{% for lv, qs in levels %}
+<section class="quiz-level" aria-labelledby="level-{{ lv }}">
+  <h2 id="level-{{ lv }}">{{ lv | capitalize }}</h2>
+  {% for q in qs %}
+  <article class="question" id="{{ q.id }}" data-format="{{ q.format }}">
+    <header class="question__head">
+      <span class="question__id">{{ q.id }}</span>
+      <span class="tag">{{ quiz_formats[q.format] }}</span>
+      <span class="question__objs">{{ obj_links(q.objectives, root) }}</span>
+    </header>
+    <div class="question__prompt">{{ q.prompt | mdblock }}</div>
+    {% if q.format == 'mc' %}
+    <ol class="options" aria-label="Options for {{ q.id }}">
+      {% for o in q.options %}
+      <li class="opt" data-correct="{{ 'true' if o.correct else 'false' }}">
+        <span class="opt__key">{{ o.key }}</span><span class="opt__text">{{ o.text | md }}</span>
+        <span class="opt__why" hidden>{{ o.why | md }}</span>
+      </li>
+      {% endfor %}
+    </ol>
+    {% endif %}
+    <details class="solution">
+      <summary>Solution</summary>
+      <div class="solution__body">{{ solution(q) }}</div>
+    </details>
+  </article>
+  {% endfor %}
+</section>
+{% endfor %}
+<section class="print-solutions" aria-hidden="true">
+  <h2>Solutions</h2>
+  {% for lv, qs in levels %}{% for q in qs %}
+  <div class="print-solution"><h3>{{ q.id }}</h3>{{ solution(q) }}</div>
+  {% endfor %}{% endfor %}
+</section>
+{% endblock %}
