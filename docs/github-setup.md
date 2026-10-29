@@ -2,14 +2,7 @@
 
 ## 1. Set your username
 
-Replace the `OWNER` placeholder everywhere (README badges and links, `plugin.json`, `CITATION.cff`, issue template, `FUNDING.yml`):
-
-```bash
-grep -rl OWNER . --exclude-dir=.git | xargs sed -i 's/OWNER/your-username/g'
-git commit -am "Set repository owner"
-```
-
-On macOS use `sed -i ''`.
+The `OWNER` placeholder has been replaced with `gspinaci` in the README, `plugin.json` and `CITATION.cff`. Fork under another account? Run `grep -rl gspinaci README.md CITATION.cff plugins | xargs sed -i 's/gspinaci/your-username/g'` (on macOS use `sed -i ''`).
 
 ## 2. Create the repository
 
@@ -25,7 +18,7 @@ On <https://github.com/new>:
 Then push:
 
 ```bash
-git remote add origin git@github.com:your-username/study-kit.git
+git remote add origin git@github.com:gspinaci/study-kit.git
 git push -u origin main --tags
 ```
 
@@ -35,7 +28,7 @@ Pushing the `v0.3.0` tag triggers the release workflow, which publishes `study-k
 
 **About** (gear icon on the repo page)
 
-- Website: `https://your-username.github.io/study-kit/`
+- Website: `https://gspinaci.github.io/study-kit/`
 - Topics: `agent-skills` `claude-code` `claude-skills` `anthropic` `skill-md` `anki` `spaced-repetition` `flashcards` `study-tools` `learning` `education` `static-site` `jupyter` `digital-humanities`
 - Tick: Releases. Untick: Packages, Deployments (optional).
 
