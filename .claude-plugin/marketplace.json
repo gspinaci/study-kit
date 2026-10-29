@@ -1,0 +1,14 @@
+{
+  "name": "gspinaci-skills",
+  "description": "Agent skills by Gianmarco Spinaci.",
+  "owner": {
+    "name": "Gianmarco Spinaci"
+  },
+  "plugins": [
+    {
+      "name": "study-kit",
+      "source": "./plugins/study-kit",
+      "description": "Grounded study paths as a static website, plus a styled Anki deck, from a book, chapter, paper or syllabus."
+    }
+  ]
+}

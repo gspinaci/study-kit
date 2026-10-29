@@ -53,7 +53,7 @@ Most tools produce shallow definition cards and invented curricula. study-kit is
 
 ```
 /plugin marketplace add gspinaci/study-kit
-/plugin install study-kit@spinaci-skills
+/plugin install study-kit@gspinaci-skills
 ```
 
 **Any agent supporting Agent Skills** ([skills CLI](https://skills.sh)):
